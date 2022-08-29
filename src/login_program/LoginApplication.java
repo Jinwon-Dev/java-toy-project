@@ -59,13 +59,10 @@ public class LoginApplication {
 
         User newUser = new User(id, password, nickname);
 
-        for (int i = 0; i < userArray.length; i++) {
-            if (userArray[i] == null) { // 비어있으면(null이면)
-                userArray[i] = newUser;
-                System.out.println("회원가입 되었습니다!!");
-                userCount++;
-                return;
-            }
+        if (userCount < 10) {
+            userArray[userCount++] = new User(id, password, nickname);
+            System.out.println("회원가입 되었습니다.");
+            return;
         }
 
         System.out.println("회원가입에 실패하였습니다.");
