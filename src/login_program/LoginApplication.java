@@ -75,17 +75,30 @@ public class LoginApplication {
         System.out.print("비밀번호: ");
         String password = scanner.next(); // password 받기
 
+        User user = isMatch(id, password);
+
+        if (user != null) { // user가 null이 아니고 아이디, 비밀번호가 일치할 시
+
+            System.out.println("로그인에 성공하였습니다.");
+            System.out.println("아이디: " + user.getId() + ", " + "닉네임: " + user.getNickname()); // 로그인된 아이디와 닉네임 출력
+            loginState = true;
+        } else {
+            System.out.println("로그인에 실패하였습니다."); // 로그인 실패 메시지
+        }
+    }
+
+
+    private static User isMatch(String id, String password) { // 아이디와 비밀번호가 일치하는지 확인
+        User user = null;
         for (int i = 0; i < userArray.length; i++) {
-            if ((id.equals(userArray[i].getId())) && (password.equals(userArray[i].getPassword()))) { // 로그인할 아이디와 비밀번호가 일치하면
-                System.out.println("로그인에 성공하였습니다.");
-                System.out.println("아이디: " + userArray[i].getId() + ", " + "닉네임: " + userArray[i].getNickname()); // 로그인된 아이디와 닉네임 출력
-                loginState = true;
-                break;
-            } else { // 로그인할 아이디와 비밀번호가 일치하지 않으면
-                System.out.println("로그인에 실패하였습니다."); // 로그인 실패 메시지
-                break;
+            if (userArray[i] != null) { // 비어있는지 확인
+                if (userArray[i].getId().equals(id) && userArray[i].getPassword().equals(password)) { // 로그인할 아이디와 비밀번호가 일치하면
+                    user = userArray[i];
+                    break;
+                }
             }
         }
+        return user;
     }
 
     private static void userLookUp() { // 사용자 조회
@@ -113,15 +126,19 @@ public class LoginApplication {
             String password = scanner.next();
 
             for (int i = 0; i < userArray.length; i++) {
-                if ((id.equals(userArray[i].getId())) && (password.equals(userArray[i].getPassword()))) { // 로그인할 아이디와 비밀번호가 일치하면
+                if (userArray[i] != null) { // null이 아닐 시
+                    if (userArray[i].getId().equals(id) && userArray[i].getPassword().equals(password)) { // 로그인할 아이디와 비밀번호가 일치하면
 
-                    userArray[i] = new User(null, null, null);
+                        userArray[i] = null;
 
-                    System.out.println("탈퇴되었습니다."); // 탈퇴 완료 메시지
-                    break;
+                        System.out.println("탈퇴되었습니다."); // 탈퇴 완료 메시지
+                        loginState = false; // 로그인 상태 변경
+
+                        userCount--; // 새로운 가입을 위한 회원수 감소
+                        break;
+                    }
                 } else { // 로그인할 아이디와 비밀번호가 일치하지 않으면
                     System.out.println("탈퇴에 실패하였습니다."); //  탈퇴 실패 메시지
-                    break;
                 }
             }
         } else {
