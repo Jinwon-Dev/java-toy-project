@@ -34,6 +34,8 @@ public class LoginApplication {
                     withDraw();
                 } else if (selectNo == 5) {
                     isTerminate = true;
+                } else {
+                    continue; // 1~5 사이의 수가 입력되지 않을 시 처음 메뉴로 돌아감
                 }
             } while (!isTerminate);
         } catch (InputMismatchException e) {
