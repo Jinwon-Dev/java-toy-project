@@ -146,5 +146,7 @@ public class LoginApplication {
         } else {
             System.out.println("로그인을 먼저 하세요.");
         }
+
+        scanner.close();
     }
 }
