@@ -10,6 +10,7 @@ import java.util.*;
 
 import static bank_program.auth.controller.AuthController.startMenu;
 import static bank_program.auth.repository.UserRepository.userDB;
+import static bank_program.account.presentation.controller.AccountController.userMenu;
 
 public class AuthService {
 
@@ -17,7 +18,7 @@ public class AuthService {
 
     public static boolean isTerminate;
 
-    private static boolean loginState;
+    public static boolean loginState;
 
     private static UserRepository userRepository = new UserRepository();
 
@@ -25,8 +26,7 @@ public class AuthService {
      * 계좌 생성
      */
     public static void createAccount() throws IOException {
-        System.out.println("**계좌 생성**");
-        System.out.println();
+        System.out.println("**계좌 생성**\n");
 
         System.out.print("아이디: ");
         String id = br.readLine();
@@ -43,13 +43,19 @@ public class AuthService {
             String number = Integer.toString(accountNo);
 
             System.out.println("**계좌가 생성되었습니다**");
-            System.out.println("**계좌 번호는 " + number + "입니다**");
-            System.out.println();
+            System.out.println("**계좌 번호는 " + number + "입니다**\n");
 
-            UserEntity newUser = new UserEntity(id, password, number);
+            System.out.print("입금액 : ");
+            Long balance = Long.parseLong(br.readLine());
+
+            UserEntity newUser = new UserEntity(id, password, number, balance);
 
             userRepository.add(newUser);
-        } else System.out.println("**이미 존재하는 ID가 있습니다**");
+            startMenu();
+        } else {
+            System.out.println("**이미 존재하는 ID가 있습니다**");
+            startMenu();
+        }
     }
 
     /**
@@ -64,12 +70,12 @@ public class AuthService {
         String password = br.readLine();
 
         if (isMatch(id, password)) {
-            System.out.println("**로그인에 성공하였습니다**");
-            System.out.println();
+            System.out.println("**로그인에 성공하였습니다**\n");
             loginState = true;
+            userMenu();
         } else {
-            System.out.println("**로그인에 실패하였습니다**");
-            System.out.println();
+            System.out.println("**로그인에 실패하였습니다**\n");
+            startMenu();
         }
     }
 
@@ -88,7 +94,6 @@ public class AuthService {
             }
         }
 
-        loginState = false;
         return false;
     }
 
@@ -119,14 +124,13 @@ public class AuthService {
             switch (answer) {
                 case 1 -> {
                     loginState = false;
-                    System.out.println("**로그아웃 되었습니다**");
-                    System.out.println();
+                    System.out.println("**로그아웃 되었습니다**\n");
                 }
-                case 2 -> startMenu();
+                case 2 -> userMenu();
             }
         } else if (!loginState) {
-            System.out.println("**로그인을 먼저 해주세요**");
-            System.out.println();
+            System.out.println("**로그인을 먼저 해주세요**\n");
+            startMenu();
         }
     }
 
@@ -136,27 +140,27 @@ public class AuthService {
     public static void withDraw() throws IOException {
         System.out.println("**사용자 탈퇴 및 계좌 해지**");
 
-        if (loginState) {
-            System.out.print("탈퇴할 아이디: ");
-            String id = br.readLine();
-
-            System.out.print("비밀번호: ");
-            String password = br.readLine();
-
-            for (int i = 0; i < userDB.size(); i++) {
-                if (isMatch(id, password)) {
-                    userRepository.remove(i);
-                    System.out.println("**탈퇴 및 계좌 해지 되었습니다**");
-                    System.out.println();
-                    loginState = false;
-                } else if (!isMatch(id, password)) {
-                    System.out.println("**아이디나 비밀번호가 일치하지 않습니다**");
-                    System.out.println();
-                }
-            }
-        } else if (!loginState) {
-            System.out.println("**로그인을 먼저 해주세요**");
-            System.out.println();
+        if (!loginState) {
+            System.out.println("**로그인을 먼저 해주세요**\n");
+            return;
         }
+
+        System.out.print("탈퇴할 아이디: ");
+        String id = br.readLine();
+
+        System.out.print("비밀번호: ");
+        String password = br.readLine();
+
+        for (int i = 0; i < userDB.size(); i++) {
+            if (isMatch(id, password)) {
+                userRepository.remove(i);
+                System.out.println("**탈퇴 및 계좌 해지 되었습니다**\n");
+                loginState = false;
+                startMenu();
+                return;
+            }
+        }
+
+        System.out.println("**아이디나 비밀번호가 일치하지 않습니다**");
     }
 }

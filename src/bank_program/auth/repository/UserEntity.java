@@ -1,38 +1,37 @@
 package bank_program.auth.repository;
 
 public class UserEntity {
-    private String id;
-    private String password;
+    private final String id;
+    private final String password;
 
-    private String number;
+    private final String number;
 
-    public UserEntity(String id, String password, String number) {
+    private Long balance;
+
+    public UserEntity(String id, String password, String number, Long balance) {
         this.id = id;
         this.password = password;
         this.number = number;
+        this.balance = balance;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public Long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Long balance) {
+        this.balance = balance;
     }
 }
