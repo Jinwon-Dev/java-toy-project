@@ -6,7 +6,7 @@ public class UserEntity {
 
     private final String number;
 
-    private Long balance;
+    private Long balance = 1L;
 
     public UserEntity(String id, String password, String number, Long balance) {
         this.id = id;
