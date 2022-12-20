@@ -15,12 +15,10 @@ public class AuthController {
         System.out.println("1. 계좌 생성 | 2. 사용자 로그인 | 3. 종료");
         System.out.print("선택> ");
 
-        int selectNo = Integer.parseInt(br.readLine());
-
-        switch (selectNo) {
-            case 1 -> createAccount();
-            case 2 -> logIn();
-            case 3 -> {
+        switch (br.readLine()) {
+            case "1" -> createAccount();
+            case "2" -> logIn();
+            case "3" -> {
                 isTerminate = true;
                 System.out.println("**종료되었습니다.**");
             }
