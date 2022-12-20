@@ -119,14 +119,12 @@ public class AuthService {
             System.out.println("로그아웃 하시겠습니까?");
             System.out.println("1. 예 | 2. 아니오");
 
-            int answer = Integer.parseInt(br.readLine());
-
-            switch (answer) {
-                case 1 -> {
+            switch (br.readLine()) {
+                case "1" -> {
                     loginState = false;
                     System.out.println("**로그아웃 되었습니다**\n");
                 }
-                case 2 -> userMenu();
+                case "2" -> userMenu();
             }
         } else if (!loginState) {
             System.out.println("**로그인을 먼저 해주세요**\n");
@@ -137,7 +135,7 @@ public class AuthService {
     /**
      * 사용자 탈퇴
      */
-    public static void withDraw() throws IOException {
+    public static void withDrawal() throws IOException {
         System.out.println("**사용자 탈퇴 및 계좌 해지**");
 
         if (!loginState) {
